@@ -18,9 +18,7 @@ function SistemaCadastro() {
 
     function adicionarParticipante(nome, sobrenome, email, idade, sexo) {
         
-        if(verificarIgualdadeDeEmail(email) === 1){
-            throw 'Participante já existente!';
-        }else{
+        if(obterParticipante(email) === undefined){
             var p = new Participante();
             p.nome = nome;
             p.sobrenome = sobrenome;
@@ -29,20 +27,9 @@ function SistemaCadastro() {
             p.sexo = sexo;
 
             participantes.push(p);
+        }else{
+            throw 'Participante já existente!';
         }
-    }
-
-    function verificarIgualdadeDeEmail(email){
-       
-        var variavelDeControle = 0;
-        
-        for(var i = 0;i < participantes.length;i++){
-            if(participantes[i].email === email){
-                return 1;
-            }else{
-                variavelDeControle = 0;
-            }
-        }return variavelDeControle;
     }
     
     function removerParticipante(email) {
