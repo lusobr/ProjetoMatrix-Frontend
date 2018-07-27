@@ -3,7 +3,7 @@ function Participante() {
     this.nome = "";
     this.sobrenome = "";
     this.email = "";
-    this.idade = 0
+    this.idade = 0;
     this.sexo = 0
     this.nota = 0
     this.aprovado = false
@@ -16,11 +16,14 @@ function Participante() {
  */
 function SistemaCadastro() {
 
-    //Onde os participantes ficarão armazenados
     var participantes = [];
 
     function adicionarParticipante(nome, sobrenome, email, idade, sexo) {
-        //implemente o código necessário
+        for(var i = 0;i < participantes.length;i++){
+            if(participantes[i].email === email){
+                throw 'Participante já existente!';
+            }
+        }
         var p = new Participante();
         p.nome = nome;
         p.sobrenome = sobrenome;
@@ -32,37 +35,88 @@ function SistemaCadastro() {
     }
 
     function removerParticipante(email) {
-        //implemente o código necessário       
+        for(var i = 0;i < participantes.length; i++){
+            if(participantes[i].email === email)
+                participantes.splice(i,1);
+        }      
     }
     function buscarParticipantesPorNome(nome){
-        //implemente o código necessário
+        var acumulador = [];
+        for(var i=0;i < participantes.length;i++){
+            if(participantes[i].nome === nome){
+                acumulador.push(participantes[i]);
+            }   
+
+        }return acumulador;
     }    
     function buscarParticipantesPorSexo(sexo){
-        //implemente o código necessário
+        var acumulador = [];
+        for(var i=0;i < participantes.length;i++){
+            if(participantes[i].sexo === sexo){
+                acumulador.push(participantes[i]);
+            }   
+
+        }return acumulador;
     }
     function buscarParticipantesAprovados(){
-        //implemente o código necessário
+        var acumulador = [];
+        for(var i = 0;i < participantes.length;i++){
+            if(participantes[i].aprovado == true){
+                acumulador.push(participantes[i]);
+            }
+        }return acumulador;
     }
     function buscarParticipantesReprovados(){
-        //implemente o código necessário
+        var acumulador = [];
+        for(var i = 0;i<participantes.length;i++){
+            if(participantes[i].aprovado === false){
+                acumulador.push(participantes[i]);
+            }
+        }return acumulador;
     }
     function obterParticipante(email){
-        //implemente o código necessário
+        for(var i=0;i<participantes.length;i++){
+            if(participantes[i].email === email)
+                return participantes[i];
+        }
     }
-    function adicionarNotaAoParticipante(email, nota){
-        //implemente o código necessário
-    }
+    function adicionarNotaAoParticipante(email,nota){
+        
+        for(var i=0;i < participantes.length;i++){
+            if(participantes[i].email === email) {
+                participantes[i].nota = nota;
+            if(participantes[i].nota >= 70){
+                   participantes[i].aprovado = true;
+            }else{ 
+               participantes[i].aprovado = false;
+             }
+            }
+        }
+    }   
     function obterMediaDasNotasDosParticipantes(){
-        //implemente o código necessário
+        var media = 0;
+        for(var i=0;i<participantes.length;i++){
+            media = media + participantes[i].nota;
+        }return (media/participantes.length);
     }
     function obterTotalDeParticipantes(){
         return participantes.length;
     }
     function verificarSeParticipanteEstaAprovado(email){
-        //implemente o código necessário
+        var avaliador = false;
+        for(var i=0;i<participantes.length;i++){
+            if(participantes[i].email === email){
+                if(participantes[i].aprovado === true)  return "Aprovado";
+                 else return "Reprovado";
+            }
+        }
     }
     function obterQuantidadeDeParticipantesPorSexo(sexo){
-        //implemente o código necessário
+        acumulador = [];
+        for(var i = 0;i<participantes.length;i++){
+            if(participantes[i].sexo === sexo)
+                acumulador.push(participantes[i]);
+        }return acumulador.length;
     }
 
     return {
