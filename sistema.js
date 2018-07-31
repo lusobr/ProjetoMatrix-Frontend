@@ -33,94 +33,77 @@ function SistemaCadastro() {
     }
     
     function removerParticipante(email) {
-        
-        for(var i = 0;i < participantes.length; i++){
-            if(participantes[i].email === email){
-                participantes.splice(i,1);
-            break;
-            }
-        }      
-    }
+    
+        participantes.splice(participantes.findIndex(function (objetoParticipante){
+            return (objetoParticipante.email === email);
+        }),1);
+    }      
     
     function buscarParticipantesPorNome(nome){
-        
-        var acumuladorDeParticipantes = [];
-        
-        for(var i=0;i < participantes.length;i++){
-            if(participantes[i].nome === nome){
-                acumuladorDeParticipantes.push(participantes[i]);
-            }   
+    
+        return participantes.filter(function(objetoParticipante){
+            return objetoParticipante.nome === nome;   
+        });
 
-        }return acumuladorDeParticipantes;
     }    
     
     function buscarParticipantesPorSexo(sexo){
         
-        var acumuladorDeParticipantes = [];
-        
-        for(var i=0;i < participantes.length;i++){
-            if(participantes[i].sexo === sexo){
-                acumuladorDeParticipantes.push(participantes[i]);
-            }   
-
-        }return acumuladorDeParticipantes;
+        return participantes.filter(function(objetoParticipante){
+            return objetoParticipante.sexo === sexo;   
+        });
+    
     }
    
     function buscarParticipantesAprovados(){
-       
-        var acumuladorDeParticipantes = [];
-        
-        for(var i = 0;i < participantes.length;i++){
-            if(participantes[i].aprovado == true){
-                acumuladorDeParticipantes.push(participantes[i]);
-            }
-        }return acumuladorDeParticipantes;
+    
+        return participantes.filter(function(objetoParticipante){
+            if(objetoParticipante.aprovado === true){
+                return objetoParticipante;
+            }  
+        });
     }
    
     function buscarParticipantesReprovados(){
         
-        var acumuladorDeParticipantes = [];
-        
-        for(var i = 0;i<participantes.length;i++){
-            if(participantes[i].aprovado === false){
-                acumuladorDeParticipantes.push(participantes[i]);
-            }
-        }return acumuladorDeParticipantes;
+        return participantes.filter(function(objetoParticipante){
+            if(objetoParticipante.aprovado === false){
+                return objetoParticipante;
+            }  
+        });
     }
     
     function obterParticipante(email){
        
-        for(var i=0;i<participantes.length;i++){
-            if(participantes[i].email === email){
-                return participantes[i];
-            break;
-            }
-        }
+        return participantes.find(function(objetoParticipante){
+            return objetoParticipante.email === email;
+        });
+        
     }
    
     function adicionarNotaAoParticipante(email,nota){
         
-        for(var i=0;i < participantes.length;i++){
-            if(participantes[i].email === email) {
-                participantes[i].nota = nota;
-                if(participantes[i].nota >= 70){
-                   participantes[i].aprovado = true;
-                break;
+        
+        participantes.forEach(function(objetoParticipante){
+            if(objetoParticipante.email === email) {
+                objetoParticipante.nota = nota;
+                if(objetoParticipante.nota >= 70){
+                    objetoParticipante.aprovado = true;
                 }else{ 
-                    participantes[i].aprovado = false;
-                 break;
+                    objetoParticipante.aprovado = false;
                  }
-            }
-        }
-    }   
+            }});
+    }  
    
     function obterMediaDasNotasDosParticipantes(){
-       
-        var media = 0;
         
-        for(var i=0;i<participantes.length;i++){
-            media = media + participantes[i].nota;
-        }return (media/participantes.length);
+        var soma = 0;
+        
+        participantes.forEach(function(objetoParticipante){
+            return soma += objetoParticipante.nota;
+        });
+        
+        return soma/participantes.length;
     }
    
     function obterTotalDeParticipantes(){
@@ -130,25 +113,20 @@ function SistemaCadastro() {
    
     function verificarSeParticipanteEstaAprovado(email){
         
-        for(var i=0;i<participantes.length;i++){
-            if(participantes[i].email === email){
-                if(participantes[i].aprovado === true){     
-                    return "Aprovado";
-                }else{
-                    return "Reprovado";
-                 }
-            }
-        }
+            return participantes.find(function(objetoParticipante){
+                if (objetoParticipante.aprovado === false)
+                    return 'reprovado';
+                else 
+                    return 'aprovado';
+            });
     }
     
     function obterQuantidadeDeParticipantesPorSexo(sexo){
         
-        acumuladorDeParticipantes = [];
-        
-        for(var i = 0;i<participantes.length;i++){
-            if(participantes[i].sexo === sexo)
-                acumuladorDeParticipantes.push(participantes[i]);
-        }return acumuladorDeParticipantes.length;
+        return participantes.filter(function(objetoParticipante){
+            if(objetoParticipante.sexo === sexo)
+                return objetoParticipante;
+        }).length;
     }
 
     return {
