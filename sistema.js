@@ -74,17 +74,15 @@ function SistemaCadastro() {
     }
    
     function adicionarNotaAoParticipante(email,nota){          
-        var i = 0;
         participantes.forEach(function(objetoParticipante){   
             if(objetoParticipante.email === email) {
-                participantes[i].nota = nota;
+                objetoParticipante.nota = nota;
                 if(objetoParticipante.nota >= 70){
-                    participantes[i].aprovado = true;
+                    objetoParticipante.aprovado = true;
                 }else{ 
-                    participantes[i].aprovado = false;
+                    objetoParticipante.aprovado = false;
                  }
             }
-            i++;
         });
     }  
    
