@@ -13,11 +13,9 @@ function Participante() {
  // Representa o sistema
  
 function SistemaCadastro() {
-
     var participantes = [];
-
+    
     function adicionarParticipante(nome, sobrenome, email, idade, sexo) {
-        
         if(obterParticipante(email) === undefined){
             var p = new Participante();
             p.nome = nome;
@@ -33,97 +31,86 @@ function SistemaCadastro() {
     }
     
     function removerParticipante(email) {
-    
         participantes.splice(participantes.findIndex(function (objetoParticipante){
             return (objetoParticipante.email === email);
         }),1);
     }      
     
     function buscarParticipantesPorNome(nome){
-    
-        return participantes.filter(function(objetoParticipante){
-            return objetoParticipante.nome === nome;   
+        return participantes.filter(function(objetoParticipante){ 
+            return objetoParticipante.nome === nome;  
         });
 
     }    
     
     function buscarParticipantesPorSexo(sexo){
-        
         return participantes.filter(function(objetoParticipante){
-            return objetoParticipante.sexo === sexo;   
+            return objetoParticipante.sexo === sexo;
         });
     
     }
    
     function buscarParticipantesAprovados(){
-    
-        return participantes.filter(function(objetoParticipante){
+        return participantes.filter(function(objetoParticipante){   
             if(objetoParticipante.aprovado === true){
                 return objetoParticipante;
             }  
         });
     }
    
-    function buscarParticipantesReprovados(){
-        
-        return participantes.filter(function(objetoParticipante){
+    function buscarParticipantesReprovados(){  
+        return participantes.filter(function(objetoParticipante){           
             if(objetoParticipante.aprovado === false){
                 return objetoParticipante;
             }  
         });
     }
     
-    function obterParticipante(email){
-       
-        return participantes.find(function(objetoParticipante){
+    function obterParticipante(email){      
+        return participantes.find(function(objetoParticipante){          
             return objetoParticipante.email === email;
         });
         
     }
    
-    function adicionarNotaAoParticipante(email,nota){
-        
-        
-        participantes.forEach(function(objetoParticipante){
+    function adicionarNotaAoParticipante(email,nota){          
+        var i = 0;
+        participantes.forEach(function(objetoParticipante){   
             if(objetoParticipante.email === email) {
-                objetoParticipante.nota = nota;
+                participantes[i].nota = nota;
                 if(objetoParticipante.nota >= 70){
-                    objetoParticipante.aprovado = true;
+                    participantes[i].aprovado = true;
                 }else{ 
-                    objetoParticipante.aprovado = false;
+                    participantes[i].aprovado = false;
                  }
-            }});
+            }
+            i++;
+        });
     }  
    
-    function obterMediaDasNotasDosParticipantes(){
-        
+    function obterMediaDasNotasDosParticipantes(){ 
         var soma = 0;
-        
-        participantes.forEach(function(objetoParticipante){
+        participantes.forEach(function(objetoParticipante){    
             return soma += objetoParticipante.nota;
-        });
-        
+        });      
         return soma/participantes.length;
     }
    
-    function obterTotalDeParticipantes(){
-        
+    function obterTotalDeParticipantes(){       
         return participantes.length;
     }
    
-    function verificarSeParticipanteEstaAprovado(email){
-        
-            return participantes.find(function(objetoParticipante){
+    function verificarSeParticipanteEstaAprovado(email){       
+            return participantes.find(function(objetoParticipante){               
                 if (objetoParticipante.aprovado === false)
                     return 'reprovado';
                 else 
-                    return 'aprovado';
+                    return 'aprovado';                   
             });
     }
     
-    function obterQuantidadeDeParticipantesPorSexo(sexo){
-        
-        return participantes.filter(function(objetoParticipante){
+    function obterQuantidadeDeParticipantesPorSexo(sexo){        
+        return participantes.filter(function(objetoParticipante){           
             if(objetoParticipante.sexo === sexo)
                 return objetoParticipante;
         }).length;
