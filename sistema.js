@@ -102,10 +102,7 @@ function SistemaCadastro() {
     }
     
     function obterQuantidadeDeParticipantesPorSexo(sexo){        
-        return participantes.filter(function(objetoParticipante){           
-            if(objetoParticipante.sexo === sexo)
-                return objetoParticipante;
-        }).length;
+        return buscarParticipantesPorSexo(sexo).length;
     }
 
     return {
