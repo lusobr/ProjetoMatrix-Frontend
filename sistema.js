@@ -52,7 +52,7 @@ function SistemaCadastro() {
    
     function buscarParticipantesAprovados(){
         return participantes.filter(function(objetoParticipante){   
-            if(objetoParticipante.aprovado === true){
+            if(objetoParticipante.aprovado){
                 return objetoParticipante;
             }  
         });
@@ -74,24 +74,20 @@ function SistemaCadastro() {
     }
    
     function adicionarNotaAoParticipante(email,nota){          
-        participantes.forEach(function(objetoParticipante){   
-            if(objetoParticipante.email === email) {
-                objetoParticipante.nota = nota;
-                if(objetoParticipante.nota >= 70){
-                    objetoParticipante.aprovado = true;
-                }else{ 
-                    objetoParticipante.aprovado = false;
-                 }
-            }
-        });
+       index = participantes.findIndex(function(objetoParticipante){
+           return objetoParticipante.email === email;
+       });
+       participantes[index].nota = nota;
+       if(participantes[index].nota >= 70)
+            participantes[index].aprovado = true;
+       else
+            participantes[index].aprovado = false;
     }  
    
     function obterMediaDasNotasDosParticipantes(){ 
-        var soma = 0;
-        participantes.forEach(function(objetoParticipante){    
-            return soma += objetoParticipante.nota;
-        });      
-        return soma/participantes.length;
+        return participantes.reduce(function(somas,objetoParticipante){    
+            return somas + objetoParticipante.nota;
+        },0)/ participantes.length;
     }
    
     function obterTotalDeParticipantes(){       
@@ -100,10 +96,8 @@ function SistemaCadastro() {
    
     function verificarSeParticipanteEstaAprovado(email){       
             return participantes.find(function(objetoParticipante){               
-                if (objetoParticipante.aprovado === false)
-                    return 'reprovado';
-                else 
-                    return 'aprovado';                   
+                if (objetoParticipante.email === email)
+                    return objetoParticipante.aprovado;                
             });
     }
     
