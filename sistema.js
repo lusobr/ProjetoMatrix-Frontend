@@ -95,10 +95,7 @@ function SistemaCadastro() {
     }
    
     function verificarSeParticipanteEstaAprovado(email){       
-            return participantes.find(function(objetoParticipante){               
-                if (objetoParticipante.email === email)
-                    return objetoParticipante.aprovado;                
-            });
+            return obterParticipante(email).aprovado;
     }
     
     function obterQuantidadeDeParticipantesPorSexo(sexo){        
