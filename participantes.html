@@ -9,28 +9,46 @@
 </head>
 
 <body>
-        <h1>Cadastro de participantes</h1>
-        <form>
-                <label for="nome">Nome</label>
-                <input name="nome" type="text" id="nome">
+        <div class="container">
+			<h1>Cadastro de participantes</h1>
+			<form>
+					<label for="nome">Nome</label>
+					<input name="nome" type="text" id="nome">
 
-                <label for="sobrenome">Sobrenome</label>
-                <input name="sobrenome" type="text" id="sobrenome">
+					<label for="sobrenome">Sobrenome</label>
+					<input name="sobrenome" type="text" id="sobrenome">
 
-                <label for="email">email</label>
-                <input name="email" type="email" id="email">
+					<label for="email">email</label>
+					<input name="email" type="email" id="email">
 
-                <label for="idade">Idade</label>
-                <input name="idade" type="number" id="idade">
+					<label for="idade">Idade</label>
+					<input name="idade" type="number" id="idade">
 
-                <label for="nota">Nota</label>
-                <input name="nota" type="number" id="nota">
+					<label for="nota">Nota</label>
+					<input name="nota" type="number" id="nota">
 
-                <label for="sexo">Sexo</label>
-                <input name="sexo" type="number" id="sexo">
+					<label for="sexo">Sexo</label>
+					<input name="sexo" type="number" id="sexo">
 
-                <input type="submit" name="enviar" id="enviar">
-        </form>
+					<input type="submit" name="enviar" id="enviar">
+			</form>
+		</div>
+		<div class="container">
+			<table>
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>Email</th>
+						<th>Idade</th>
+						<th>Aprovado</th>
+						<th>Sexo</th>
+						<th>-------</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
         <script src="sistema.js"></script>
         <script src="armazenamento.js"></script>
 </body>
