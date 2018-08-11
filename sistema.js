@@ -13,7 +13,7 @@ function Participante() {
 // Representa o sistema
 
 function SistemaCadastro() {
-    var participantes = [];
+    var armazenamento = new Armazenamento("participantes");
 
     function adicionarParticipante(nome, sobrenome, email, idade, sexo) {
         if (obterParticipante(email) === undefined) {
@@ -24,7 +24,7 @@ function SistemaCadastro() {
             p.idade = idade;
             p.sexo = sexo;
 
-            participantes.push(p);
+            armazenamento.adicionar("participante", p);
         } else {
             throw 'Participante já existente!';
         }
@@ -102,9 +102,6 @@ function SistemaCadastro() {
         return buscarParticipantesPorSexo(sexo).length;
     }
 
-    function imprimirParticipantes() {
-        return participantes;
-    }
     return {
         adicionarParticipante,
         removerParticipante,
@@ -117,6 +114,6 @@ function SistemaCadastro() {
         obterMediaDasNotasDosParticipantes,
         obterTotalDeParticipantes,
         verificarSeParticipanteEstaAprovado,
-        obterQuantidadeDeParticipantesPorSexo
+        obterQuantidadeDeParticipantesPorSexo,
     };
 }

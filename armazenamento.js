@@ -1,12 +1,34 @@
-var botão = document.querySelector('#enviar').addEventListener('click',cadastrar);
+function Armazenamento(chave){
+    
+    if(window.localStorage.getItem(chave) === null)
+        window.localStorage.setItem(chave, "[]");
 
-function cadastrar(){
-	var sistema = new SistemaCadastro();
-	var nome = document.querySelector('#nome').value,
-		sobrenome = document.querySelector('#sobrenome').value,
-		email = document.querySelector('#email').value,
-		idade = document.querySelector('#idade').value,
-		sexo = document.querySelector('#sexo').value;
-	
-	sistema.adicionarParticipante(nome,sobrenome,email,idade,sexo);
-};
+    function adicionar(participante){
+        objParticipante = deserializar();
+        objParticipante.push(participante);
+        serializar(objParticipante);
+    }
+    
+    function buscarParticipante(email){
+        var objParticipante = deserializar();
+        return objParticipante.reduce(filtrarParticipante, 0);
+
+        function filtrarParticipante(dados, index){
+            return dados[index].email === email;
+        }
+    }
+
+    function serializar(chave,valor){
+        var serializado = JSON.stringify(valor);
+        window.localStorage.setItem(chave,serializado);
+    }
+
+    function deserializar(chave){
+        var deserializado = JSON.parse(chave);
+        window.localStorage.getItem(deserializado);
+    }
+    return serializar,
+           deserializar,
+           buscarParticipante,
+           adicionar
+  };
