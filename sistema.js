@@ -24,7 +24,7 @@ function SistemaCadastro() {
             p.idade = idade;
             p.sexo = sexo;
 
-            armazenamento.adicionar("participante", p);
+            armazenamento.adicionar(p);
         } else {
             throw 'Participante já existente!';
         }
