@@ -1,34 +1,40 @@
-function Armazenamento(chave){
-    
-    if(window.localStorage.getItem(chave) === null)
-        window.localStorage.setItem(chave, "[]");
+function Armazenamento(key) {
+    var storage = window.localStorage;
 
-    function adicionar(participante){
-        objParticipante = deserializar();
-        objParticipante.push(participante);
-        serializar(objParticipante);
-    }
-    
-    function buscarParticipante(email){
-        var objParticipante = deserializar();
-        return objParticipante.reduce(filtrarParticipante, 0);
-
-        function filtrarParticipante(dados, index){
-            return dados[index].email === email;
-        }
+    if (capturarDado() === null) {
+        storage.setItem(key, "[]");
     }
 
-    function serializar(chave,valor){
-        var serializado = JSON.stringify(valor);
-        window.localStorage.setItem(chave,serializado);
+    function adicionar(dado) {
+        var array = capturarDado();
+        array.push(dado);
+        atualizarOuInserirDado(array);
+    }
+    function editar(chave, dado) {
+        var array = capturarDado();
+        var index = array.findIndex(function (objecto) {
+            return objecto[chave] === dado[chave];
+        });
+        array[index] = dado;
+        atualizarOuInserirDado(array);
+    }
+    function obterItem(chave, dado) {
+        return capturarDado().find(function (objecto) {
+            return objecto[chave] === dado;
+        })
+    }
+    function capturarDado() {
+        return JSON.parse(storage.getItem(key));
+    }
+    function atualizarOuInserirDado(dado) {
+        storage.setItem(key, JSON.stringify(dado));
     }
 
-    function deserializar(chave){
-        var deserializado = JSON.parse(chave);
-        window.localStorage.getItem(deserializado);
+    return {
+        capturarDado,
+        atualizarOuInserirDado,
+        obterItem,
+        editar,
+        adicionar
     }
-    return serializar,
-           deserializar,
-           buscarParticipante,
-           adicionar
-  };
+}

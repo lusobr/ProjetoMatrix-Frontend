@@ -1,18 +1,16 @@
 //DOM
-function participante(){
-    var sistema = new SistemaCadastro();
-    function cadastrar(){
+var sistema = new SistemaCadastro();
 
-            var nome = document.getElementById('nome').value,
-                sobrenome = document.getElementById('sobrenome').value,
-                email = document.getElementById('email').value,
-                idade = document.getElementById('idade').value,
-                nota = document.getElementById('nota').value,
-                sexo = document.getElementById('sexo').value;
+function cadastrar() {
 
-                sistema.adicionarParticipante(nome,sobrenome,email,idade,sexo);
-                sistema.adicionarNotaAoParticipante(email,nota);
-    }
+    var nome = document.getElementById('nome').value,
+        sobrenome = document.getElementById('sobrenome').value,
+        email = document.getElementById('email').value,
+        idade = document.getElementById('idade').value,
+        nota = document.getElementById('nota').value,
+        sexo = document.getElementById('sexo').value;
 
-return cadastrar;
-}
+    sistema.adicionarParticipante(nome, sobrenome, email, idade, sexo);
+    sistema.adicionarNotaAoParticipante(email, nota);
+    window.location.reload(true);
+};
