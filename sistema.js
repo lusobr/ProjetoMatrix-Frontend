@@ -36,6 +36,10 @@ function SistemaCadastro() {
         }), 1);
     }
 
+    function buscarParticipantes(){
+       return armazenamento.capturarDado();
+    }
+
     function buscarParticipantesPorNome(nome) {
         return participantes.filter(function (objetoParticipante) {
             return objetoParticipante.nome === nome;
@@ -99,6 +103,7 @@ function SistemaCadastro() {
         return buscarParticipantesPorSexo(sexo).length;
     }
 
+    
     return {
         adicionarParticipante,
         removerParticipante,
@@ -112,6 +117,7 @@ function SistemaCadastro() {
         obterTotalDeParticipantes,
         verificarSeParticipanteEstaAprovado,
         obterQuantidadeDeParticipantesPorSexo,
-        alterarNota
+        alterarNota,
+        buscarParticipantes
     };
 }
