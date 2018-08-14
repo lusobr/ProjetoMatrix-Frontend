@@ -76,8 +76,9 @@ function SistemaCadastro() {
     }
 
     function adicionarNotaAoParticipante(email, nota) {
-        alterarNota(obterParticipante(email), nota);
-        armazenamento.editar("email", obterParticipante(email));
+        var item = obterParticipante(email);
+        alterarNota(item, nota);
+        armazenamento.editar("email", item);
     }
 
     function obterMediaDasNotasDosParticipantes() {
