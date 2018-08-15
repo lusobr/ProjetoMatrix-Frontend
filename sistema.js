@@ -30,14 +30,21 @@ function SistemaCadastro() {
         }
     }
 
+    function editarParticipante(nome, sobrenome, email, idade, sexo, nota) {
+        var participante = obterParticipante(email);
+        participante.nome = nome;
+        participante.sobrenome = sobrenome;
+        participante.idade = idade;
+        participante.sexo = sexo;
+        alterarNota(participante, nota);
+        armazenamento.editar("email", participante);
+    }
     function removerParticipante(email) {
-        participantes.splice(participantes.findIndex(function (objetoParticipante) {
-            return (objetoParticipante.email === email);
-        }), 1);
+        armazenamento.remover('email', email);
     }
 
-    function buscarParticipantes(){
-       return armazenamento.capturarDado();
+    function buscarParticipantes() {
+        return armazenamento.capturarDado();
     }
 
     function buscarParticipantesPorNome(nome) {
@@ -103,7 +110,7 @@ function SistemaCadastro() {
         return buscarParticipantesPorSexo(sexo).length;
     }
 
-    
+
     return {
         adicionarParticipante,
         removerParticipante,
@@ -118,6 +125,7 @@ function SistemaCadastro() {
         verificarSeParticipanteEstaAprovado,
         obterQuantidadeDeParticipantesPorSexo,
         alterarNota,
-        buscarParticipantes
+        buscarParticipantes,
+        editarParticipante
     };
 }
