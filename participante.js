@@ -52,7 +52,6 @@ function editarCadastrado(email) {
     document.getElementById('nome').value = participante.nome;
     document.getElementById('sobrenome').value = participante.sobrenome;
     document.getElementById('email').value = participante.email;
-    document.getElementById('email').disable = true;
     document.getElementById('idade').value = participante.idade;
     document.getElementById('nota').value = participante.nota;
     document.getElementById('sexo').value = participante.sexo;
