@@ -25,7 +25,6 @@ function cadastrar() {
         }
     }
     edicao = false;
-    email = false;
 };
 
 function montarTabela() {
