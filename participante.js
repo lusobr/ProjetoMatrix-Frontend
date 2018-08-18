@@ -1,24 +1,20 @@
 //DOM
 var sistema = new SistemaCadastro(),
-    aprovado = "",
-    sexo = "",
     edicao = false;
 
+
 function cadastrar() {
-    var nome = document.getElementById('nome').value,
-        sobrenome = document.getElementById('sobrenome').value,
-        email = document.getElementById('email').value,
-        idade = document.getElementById('idade').value,
-        nota = document.getElementById('nota').value,
-        sexo = document.getElementById('sexo').value;
+    var form = document.querySelector('#formulario'),
+        sexo = document.querySelector('input[name=sexo_radio]:checked').value;
+
 
     if (edicao) {
-        sistema.editarParticipante(nome, sobrenome, email, idade, sexo, nota);
+        sistema.editarParticipante(form.nome.value, form.sobrenome.value, form.email.value, form.idade.value,sexo, form.nota.value);
         window.location.reload(true);
     } else {
         try {
-            sistema.adicionarParticipante(nome, sobrenome, email, idade, sexo);
-            sistema.adicionarNotaAoParticipante(email, nota);
+            sistema.adicionarParticipante(form.nome.value, form.sobrenome.value, form.email.value, form.idade.value,sexo);
+            sistema.adicionarNotaAoParticipante(form.email.value, form.nota.value);
             window.location.reload(true);
         } catch (Error) {
             window.alert(Error.message);
@@ -29,7 +25,10 @@ function cadastrar() {
 
 function montarTabela() {
     sistema.buscarParticipantes().forEach(function (objeto) {
-        if (objeto.sexo === 1)
+        var aprovado = "",
+            sexo = "";
+
+        if (objeto.sexo == 1)
             sexo = 'Masculino';
         else
             sexo = 'Feminino';
@@ -40,7 +39,7 @@ function montarTabela() {
             aprovado = "Reprovado";
 
         document.getElementById('corpo').innerHTML += '<tr><td>' + objeto.nome + ' ' + objeto.sobrenome + '</td><td>' + objeto.idade + '</td><td>' + sexo + '</td><td>' + aprovado + '</td><td>'
-        + '<a href="javascript:void(0)" onclick="editarCadastrado(\'' + objeto.email + '\')">Editar</a>' + ' ' + '<a href="javascript:void(0)" onclick="excluirCadastrado(\'' + objeto.email + '\')">Excluir</a>' + '</td></tr>';
+            + '<a href="javascript:void(0)" onclick="editarCadastrado(\'' + objeto.email + '\')">Editar</a>' + ' ' + '<a href="javascript:void(0)" onclick="excluirCadastrado(\'' + objeto.email + '\')">Excluir</a>' + '</td></tr>';
     });
 }
 
@@ -53,7 +52,10 @@ function editarCadastrado(email) {
     document.getElementById('email').value = participante.email;
     document.getElementById('idade').value = participante.idade;
     document.getElementById('nota').value = participante.nota;
-    document.getElementById('sexo').value = participante.sexo;
+    var sexo = Array.from(document.querySelectorAll('input[name=sexo_radio]:cheked')).find((element) =>{
+        return element.value == participante.sexo;
+    });
+    sexo.checked = true;
 }
 
 function excluirCadastrado(email) {

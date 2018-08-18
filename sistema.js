@@ -44,37 +44,23 @@ function SistemaCadastro() {
     }
 
     function buscarParticipantes() {
-        return armazenamento.capturarDado();
+        return armazenamento.deserializar();
     }
 
     function buscarParticipantesPorNome(nome) {
-        return participantes.filter(function (objetoParticipante) {
-            return objetoParticipante.nome === nome;
-        });
-
+        return armazenamento.obterItem('nome',nome);
     }
 
     function buscarParticipantesPorSexo(sexo) {
-        return participantes.filter(function (objetoParticipante) {
-            return objetoParticipante.sexo === sexo;
-        });
-
+        return armazenamento.obterItem('sexo',sexo);
     }
 
     function buscarParticipantesAprovados() {
-        return participantes.filter(function (objetoParticipante) {
-            if (objetoParticipante.aprovado) {
-                return objetoParticipante;
-            }
-        });
+        return armazenamento.obterItem('aprovado',true);
     }
 
     function buscarParticipantesReprovados() {
-        return participantes.filter(function (objetoParticipante) {
-            if (objetoParticipante.aprovado === false) {
-                return objetoParticipante;
-            }
-        });
+        return armazenamento.obterItem('aprovado',false);
     }
 
     function obterParticipante(email) {
@@ -93,13 +79,13 @@ function SistemaCadastro() {
     }
 
     function obterMediaDasNotasDosParticipantes() {
-        return participantes.reduce(function (somas, objetoParticipante) {
+        return armazenamento.deserializar.reduce(function (somas, objetoParticipante) {
             return somas + objetoParticipante.nota;
-        }, 0) / participantes.length;
+        }, 0) / obterTotalDeParticipantes;
     }
 
     function obterTotalDeParticipantes() {
-        return participantes.length;
+        return armazenamento.deserializar().length;
     }
 
     function verificarSeParticipanteEstaAprovado(email) {
@@ -124,7 +110,6 @@ function SistemaCadastro() {
         obterTotalDeParticipantes,
         verificarSeParticipanteEstaAprovado,
         obterQuantidadeDeParticipantesPorSexo,
-        alterarNota,
         buscarParticipantes,
         editarParticipante
     };

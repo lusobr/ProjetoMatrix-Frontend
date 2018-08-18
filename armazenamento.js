@@ -1,55 +1,54 @@
 function Armazenamento(key) {
     var storage = window.localStorage;
 
-    if (capturarDado() === null) {
+    if (deserializar() === null) {
         storage.setItem(key, "[]");
     }
 
     function adicionar(dado) {
-        var array = capturarDado();
+        var array = deserializar();
         array.push(dado);
-        atualizarOuInserirDado(array);
+        serializar(array);
     }
 
     function editar(chave, dado) {
-        var array = capturarDado();
+        var array = deserializar();
         var index = array.findIndex(function (objecto) {
             return objecto[chave] === dado[chave];
         });
         array[index] = dado;
-        atualizarOuInserirDado(array);
+        serializar(array);
     }
 
     function remover(chave, dado) {
-        var participante = capturarDado(),
+        var participante = deserializar(),
             index = participante.findIndex(function (objeto) {
                 return objeto[chave] === dado;
             });
         
             participante.splice(index,1);
-        atualizarOuInserirDado(participante);
+            serializar(participante);
     }
 
     function obterItem(chave, dado) {
-        return capturarDado().find(function (objecto) {
+        return deserializar().find(function (objecto) {
             return objecto[chave] === dado;
         })
     }
 
-    function capturarDado() {
+    function deserializar() {
         return JSON.parse(storage.getItem(key));
     }
 
-    function atualizarOuInserirDado(dado) {
+    function serializar(dado) {
         storage.setItem(key, JSON.stringify(dado));
     }
 
     return {
-        capturarDado,
-        atualizarOuInserirDado,
         obterItem,
         editar,
         adicionar,
-        remover
+        remover,
+        deserializar
     }
 }
