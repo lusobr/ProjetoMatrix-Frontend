@@ -9,11 +9,11 @@ function cadastrar() {
 
 
     if (edicao) {
-        sistema.editarParticipante(form.nome.value, form.sobrenome.value, form.email.value, form.idade.value,sexo, form.nota.value);
+        sistema.editarParticipante(form.nome.value, form.sobrenome.value, form.email.value, form.idade.value, sexo, form.nota.value);
         window.location.reload(true);
     } else {
         try {
-            sistema.adicionarParticipante(form.nome.value, form.sobrenome.value, form.email.value, form.idade.value,sexo);
+            sistema.adicionarParticipante(form.nome.value, form.sobrenome.value, form.email.value, form.idade.value, sexo);
             sistema.adicionarNotaAoParticipante(form.email.value, form.nota.value);
             window.location.reload(true);
         } catch (Error) {
@@ -38,21 +38,21 @@ function montarTabela() {
         else
             aprovado = "Reprovado";
 
-        document.getElementById('corpo').innerHTML += '<tr><td>' + objeto.nome + ' ' + objeto.sobrenome + '</td><td>' + objeto.idade + '</td><td>' + sexo + '</td><td>' + aprovado + '</td><td>'
-            + '<a href="javascript:void(0)" onclick="editarCadastrado(\'' + objeto.email + '\')">Editar</a>' + ' ' + '<a href="javascript:void(0)" onclick="excluirCadastrado(\'' + objeto.email + '\')">Excluir</a>' + '</td></tr>';
+        document.getElementById('corpo').innerHTML += '<tr><td>' + objeto.nome + ' ' + objeto.sobrenome + '</td><td>' + objeto.idade + '</td><td>' + sexo + '</td><td>' + aprovado + '</td><td>' + '<a href="javascript:void(0)" onclick="editarCadastrado(\'' + objeto.email + '\')">Editar</a>' + ' ' + '<a href="javascript:void(0)" onclick="excluirCadastrado(\'' + objeto.email + '\')">Excluir</a>' + '</td></tr>';
     });
 }
 
 function editarCadastrado(email) {
     edicao = true;
-    var participante = sistema.obterParticipante(email);
+    var participante = sistema.obterParticipante(email),
+        form = document.querySelector('#formulario');
 
-    document.getElementById('nome').value = participante.nome;
-    document.getElementById('sobrenome').value = participante.sobrenome;
-    document.getElementById('email').value = participante.email;
-    document.getElementById('idade').value = participante.idade;
-    document.getElementById('nota').value = participante.nota;
-    var sexo = Array.from(document.querySelectorAll('input[name=sexo_radio]:cheked')).find((element) =>{
+    form.nome.value = participante.nome;
+    form.sobrenome.value = participante.sobrenome;
+    form.email.value = participante.email;
+    form.idade.value = participante.idade;
+    form.nota.value = participante.nota;
+    var sexo = Array.from(document.querySelectorAll('input[name=sexo_radio]:cheked')).find((element) => {
         return element.value == participante.sexo;
     });
     sexo.checked = true;

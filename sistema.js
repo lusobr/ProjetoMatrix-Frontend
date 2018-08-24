@@ -7,13 +7,14 @@ function Participante() {
     this.sexo = 0;
     this.nota = 0;
     this.aprovado = false;
+    this.id = 0;
 }
 
 
 // Representa o sistema
 
 function SistemaCadastro() {
-    const armazenamento = new Armazenamento("participantes");
+    var armazenamento = new ArmazenamentoHTTP();
 
     function adicionarParticipante(nome, sobrenome, email, idade, sexo) {
         if (obterParticipante(email) === undefined) {
@@ -24,7 +25,7 @@ function SistemaCadastro() {
             p.idade = idade;
             p.sexo = sexo;
 
-            armazenamento.adicionar(p);
+            armazenamento.postHTTP(p);
         } else {
             throw new Error('participante já existente!');
         }
@@ -37,30 +38,30 @@ function SistemaCadastro() {
         participante.idade = idade;
         participante.sexo = sexo;
         alterarNota(participante, nota);
-        armazenamento.editar("email", participante);
+        armazenamento.putHTTP("email", participante);
     }
     function removerParticipante(email) {
-        armazenamento.remover('email', email);
+        armazenamento.deleteHTTP('email', email);
     }
 
     function buscarParticipantes() {
-        return armazenamento.deserializar();
+        return armazenamento.getHTTP();
     }
 
     function buscarParticipantesPorNome(nome) {
-        return armazenamento.obterItem('nome',nome);
+        return armazenamento.obterItens('nome', nome);
     }
 
     function buscarParticipantesPorSexo(sexo) {
-        return armazenamento.obterItem('sexo',sexo);
+        return armazenamento.obterItens('sexo', sexo);
     }
 
     function buscarParticipantesAprovados() {
-        return armazenamento.obterItem('aprovado',true);
+        return armazenamento.obterItens('aprovado', true);
     }
 
     function buscarParticipantesReprovados() {
-        return armazenamento.obterItem('aprovado',false);
+        return armazenamento.obterItens('aprovado', false);
     }
 
     function obterParticipante(email) {
@@ -75,17 +76,17 @@ function SistemaCadastro() {
     function adicionarNotaAoParticipante(email, nota) {
         var item = obterParticipante(email);
         alterarNota(item, nota);
-        armazenamento.editar("email", item);
+        armazenamento.putHTTP("email", item);
     }
 
     function obterMediaDasNotasDosParticipantes() {
-        return armazenamento.deserializar.reduce(function (somas, objetoParticipante) {
+        return buscarParticipantes.reduce(function (somas, objetoParticipante) {
             return somas + objetoParticipante.nota;
         }, 0) / obterTotalDeParticipantes;
     }
 
     function obterTotalDeParticipantes() {
-        return armazenamento.deserializar().length;
+        return armazenamento.getHTTP().length;
     }
 
     function verificarSeParticipanteEstaAprovado(email) {
