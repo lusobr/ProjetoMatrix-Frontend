@@ -21,6 +21,7 @@ function cadastrar() {
         }
     }
     edicao = false;
+    window.scrollTo(0,0);
 };
 
 function montarTabela() {
@@ -50,17 +51,19 @@ function editarCadastrado(email) {
     form.nome.value = participante.nome;
     form.sobrenome.value = participante.sobrenome;
     form.email.value = participante.email;
+    form.email.setAttribute('disabled',true);
     form.idade.value = participante.idade;
     form.nota.value = participante.nota;
-    var sexo = Array.from(document.querySelectorAll('input[name=sexo_radio]:cheked')).find((element) => {
+    var sexo = Array.from(document.querySelectorAll('input[name=sexo_radio]:checked')).find((element) => {
         return element.value == participante.sexo;
-    });
-    sexo.checked = true;
+});
+window.scrollTo(0,0);
 }
 
 function excluirCadastrado(email) {
     sistema.removerParticipante(email);
     window.location.reload(true);
+    window.scrollTo(0,0);
 }
 
 (function () {
