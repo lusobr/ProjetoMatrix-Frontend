@@ -3,11 +3,11 @@ var sistema = new SistemaCadastro(),
     edicao = false;
 
 
+
 function cadastrar() {
     var form = document.querySelector('#formulario'),
         sexo = document.querySelector('input[name=sexo_radio]:checked').value;
-
-
+    
     if (edicao) {
         sistema.editarParticipante(form.nome.value, form.sobrenome.value, form.email.value, form.idade.value, sexo, form.nota.value);
         window.location.reload(true);

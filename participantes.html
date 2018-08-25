@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <head>
         <title>Controle de Participantes - Projeto Matrix 3.0</title>
@@ -17,7 +17,7 @@
         <div class="container" style="background: rgb(235, 235, 235); padding-box: 200px; width: 500px">
                 <h1 style="color:black">Cadastro de participantes</h1>
 
-                <form class="form-horizontal" role="form" id="formulario">
+                <form class="form-horizontal" onsubmit="cadastrar()" role="form" id="formulario">
 
                         <label for="nome" class="control-label col-sm-3">Nome</label>
                         <div class="col-sm-8">
@@ -52,7 +52,7 @@
                         </label>
                         <br>
                         <div class="col-sm-offset-2 col-sm-8">
-                                <button type="button" class="btn btn-danger" onclick="cadastrar()">Cadastrar</button>
+                                <button id="botao" type="submit" class="btn btn-danger">Cadastrar</button>
                         </div>
                 </form>
         </div>
