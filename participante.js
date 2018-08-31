@@ -1,69 +1,99 @@
 //DOM
 var sistema = new SistemaCadastro(),
-    edicao = false;
-
-
+    edicao = false,
+    idDoParticipante = 0;
 
 function cadastrar() {
     var form = document.querySelector('#formulario'),
         sexo = document.querySelector('input[name=sexo_radio]:checked').value;
-    
+
     if (edicao) {
-        sistema.editarParticipante(form.nome.value, form.sobrenome.value, form.email.value, form.idade.value, sexo, form.nota.value);
-        window.location.reload(true);
+        sistema.editarParticipante(
+            idDoParticipante,
+            form.nome.value,
+            form.sobrenome.value,
+            form.idade.value,
+            sexo,
+            form.nota.value
+        )
+            .then(function () {
+                window.alert("Edição concluida!");
+                window.location.reload(true);
+            });
     } else {
-        try {
-            sistema.adicionarParticipante(form.nome.value, form.sobrenome.value, form.email.value, form.idade.value, sexo);
-            sistema.adicionarNotaAoParticipante(form.email.value, form.nota.value);
-            window.location.reload(true);
-        } catch (Error) {
-            window.alert(Error.message);
-        }
+
+        sistema.adicionarParticipante(
+            form.nome.value,
+            form.sobrenome.value,
+            form.email.value,
+            form.idade.value,
+            sexo,
+            form.nota.value
+        )
+            .then(function () {
+                window.alert("Participante adicionado!");
+                window.location.reload(true);
+            })
+            .catch(function (result) {
+                window.alert(result);
+                window.location.reload(true);
+            });
     }
+    event.preventDefault();
+    event.stopPropagation();
     edicao = false;
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
 };
 
 function montarTabela() {
-    sistema.buscarParticipantes().forEach(function (objeto) {
-        var aprovado = "",
-            sexo = "";
+    sistema.buscarParticipantes()
+        .then(function (participantes) {
+            participantes.forEach(function (participante) {
+                var aprovado = "",
+                    sexo = "";
 
-        if (objeto.sexo == 1)
-            sexo = 'Masculino';
-        else
-            sexo = 'Feminino';
+                if (participante.sexo == 1)
+                    sexo = 'Masculino';
+                else
+                    sexo = 'Feminino';
 
-        if (objeto.aprovado)
-            aprovado = "Aprovado";
-        else
-            aprovado = "Reprovado";
+                if (participante.aprovado)
+                    aprovado = "Aprovado";
+                else
+                    aprovado = "Reprovado";
 
-        document.getElementById('corpo').innerHTML += '<tr><td>' + objeto.nome + ' ' + objeto.sobrenome + '</td><td>' + objeto.idade + '</td><td>' + sexo + '</td><td>' + aprovado + '</td><td>' + '<a href="javascript:void(0)" onclick="editarCadastrado(\'' + objeto.email + '\')">Editar</a>' + ' ' + '<a href="javascript:void(0)" onclick="excluirCadastrado(\'' + objeto.email + '\')">Excluir</a>' + '</td></tr>';
-    });
+                document.getElementById('corpo').innerHTML += '<tr><td>' + participante.nome + ' ' + participante.sobrenome + '</td><td>' + participante.idade + '</td><td>' + sexo + '</td><td>' + aprovado + '</td><td>' + '<a href="javascript:void(0)" onclick="editarCadastrado(\'' + participante.id + '\')">Editar</a>' + ' ' + '<a href="javascript:void(0)" onclick="excluirCadastrado(\'' + participante.id + '\')">Excluir</a>' + '</td></tr>';
+            })
+        });
 }
 
-function editarCadastrado(email) {
+function editarCadastrado(id) {
     edicao = true;
-    var participante = sistema.obterParticipante(email),
-        form = document.querySelector('#formulario');
+    idDoParticipante = id;
+    var form = document.querySelector('#formulario');
 
-    form.nome.value = participante.nome;
-    form.sobrenome.value = participante.sobrenome;
-    form.email.value = participante.email;
-    form.email.setAttribute('disabled',true);
-    form.idade.value = participante.idade;
-    form.nota.value = participante.nota;
-    var sexo = Array.from(document.querySelectorAll('input[name=sexo_radio]:checked')).find((element) => {
-        return element.value == participante.sexo;
-});
-window.scrollTo(0,0);
+    sistema.obterParticipante(id)
+        .then(function (participante) {
+            form.nome.value = participante.nome;
+            form.sobrenome.value = participante.sobrenome;
+            form.email.value = participante.email;
+            form.email.setAttribute('disabled', true);
+            form.idade.value = participante.idade;
+            form.nota.value = participante.nota;
+            var sexo = Array.from(document.querySelectorAll('input[name=sexo_radio]:checked')).find((element) => {
+                return element.value == participante.sexo;
+            });
+        });
+    window.scrollTo(0, 0);
 }
 
-function excluirCadastrado(email) {
-    sistema.removerParticipante(email);
-    window.location.reload(true);
-    window.scrollTo(0,0);
+function excluirCadastrado(id) {
+    sistema.removerParticipante(id)
+        .then(function () {
+            window.alert("Participante removido!")
+            window.location.reload(true);
+            window.scrollTo(0, 0);
+        });
 }
 
 (function () {

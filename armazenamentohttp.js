@@ -1,79 +1,50 @@
 function ArmazenamentoHTTP() {
 
-	function getHTTP() {
-		var dados = [];
-		$.ajax({
-			type: "GET",
-			url: 'http://matrix.avalie.net/api/participantes/',
-			dataType: 'json',
-			async: false,
-			success: function (data) {
-				dados = data;
-			}
-		});
-		return dados;
+	function adicionar(participante) {
+		return axios.post('http://matrix.avalie.net/api/participantes', participante)
+			.then(function (resp) {
+				return resp.data;
+			})
+			.catch(function (err) {
+				throw err.response.data.message;
+			});
 	}
 
-	function postHTTP(dado) {
-		var participante = serializar(dado);
-		$.ajax({
-			type: "POST",
-			url: 'http://matrix.avalie.net/api/participantes/',
-			contentType: "application/json; charset=utf-8",
-			dataType: 'json',
-			data: participante,
-			async: false,
-			success: function () {
-				window.alert('participante adicionado com sucesso!');
-			}
-		});
+	function editar(participante) {
+		return axios.put('http://matrix.avalie.net/api/participantes/' + participante.id, participante);
 	}
 
-	function putHTTP(chave, dado) {
-		var participante = serializar(dado);
-		$.ajax({
-			type: "PUT",
-			url: 'http://matrix.avalie.net/api/participantes/' + dado.id,
-			contentType: "application/json; charset=utf-8",
-			dataType: 'json',
-			data: participante,
-			async: false
-		});
+	function remover(id) {
+		return axios.delete('http://matrix.avalie.net/api/participantes/' + id);
 	}
 
-	function deleteHTTP(chave, dado) {
-		var participante = obterItem(chave, dado);
-		$.ajax({
-			type: "DELETE",
-			url: 'http://matrix.avalie.net/api/participantes/' + participante.id,
-			dataType: 'json',
-			async: false
-		});
-	}
-
-	function obterItem(chave, dado) {
-		return getHTTP().find(function (objeto) {
-			return objeto[chave] === dado;
-		})
+	function obterItem(id) {
+		return axios.get('http://matrix.avalie.net/api/participantes/' + id)
+			.then(function (resp) {
+				return resp.data;
+			});
 	}
 
 	function obterItens(chave, dado) {
-		return getHTTP().filter(function (objeto) {
-			return objeto[chave] === dado;
+		return deserializar().filter(function (participante) {
+			return participante[chave] === dado;
 		});
 	}
 
-	function serializar(dado) {
-		return JSON.stringify(dado);
+	//Mantive o nome "deserializar" para ser igual ao armazenamento do LocalStorage
+	function deserializar() {
+		return axios.get('http://matrix.avalie.net/api/participantes/')
+			.then(function (resp) {
+				return resp.data;
+			});
 	}
+
 	return {
-		postHTTP,
+		adicionar,
+		editar,
+		remover,
 		obterItem,
-		putHTTP,
-		getHTTP,
-		obterItem,
-		serializar,
-		deleteHTTP,
-		obterItens
-	}
-};
+		obterItens,
+		deserializar
+	};
+}

@@ -16,36 +16,38 @@ function Participante() {
 function SistemaCadastro() {
     var armazenamento = new ArmazenamentoHTTP();
 
-    function adicionarParticipante(nome, sobrenome, email, idade, sexo) {
-        if (obterParticipante(email) === undefined) {
-            var p = new Participante();
-            p.nome = nome;
-            p.sobrenome = sobrenome;
-            p.email = email;
-            p.idade = idade;
-            p.sexo = sexo;
+    function adicionarParticipante(nome, sobrenome, email, idade, sexo, nota) {
 
-            armazenamento.postHTTP(p);
-        } else {
-            throw new Error('participante já existente!');
-        }
+        var p = new Participante();
+        p.nome = nome;
+        p.sobrenome = sobrenome;
+        p.email = email;
+        p.idade = idade;
+        p.sexo = sexo;
+        p.nota = nota;
+        p.aprovado = p.nota >= 70;
+
+        return armazenamento.adicionar(p);
     }
 
-    function editarParticipante(nome, sobrenome, email, idade, sexo, nota) {
-        var participante = obterParticipante(email);
-        participante.nome = nome;
-        participante.sobrenome = sobrenome;
-        participante.idade = idade;
-        participante.sexo = sexo;
-        alterarNota(participante, nota);
-        armazenamento.putHTTP("email", participante);
+    function editarParticipante(id, nome, sobrenome, idade, sexo, nota) {
+        return obterParticipante(id)
+            .then(function (objeto) {
+                objeto.nome = nome;
+                objeto.sobrenome = sobrenome;
+                objeto.idade = idade;
+                objeto.sexo = sexo;
+                objeto.nota = nota;
+                objeto.aprovado = objeto.nota >= 70
+                return armazenamento.editar(objeto);
+            });
     }
-    function removerParticipante(email) {
-        armazenamento.deleteHTTP('email', email);
+    function removerParticipante(id) {
+        return armazenamento.remover(id);
     }
 
     function buscarParticipantes() {
-        return armazenamento.getHTTP();
+        return armazenamento.deserializar();
     }
 
     function buscarParticipantesPorNome(nome) {
@@ -64,19 +66,8 @@ function SistemaCadastro() {
         return armazenamento.obterItens('aprovado', false);
     }
 
-    function obterParticipante(email) {
-        return armazenamento.obterItem("email", email);
-
-    }
-    function alterarNota(item, nota) {
-        item.nota = nota;
-        item.aprovado = item.nota >= 70;
-    }
-
-    function adicionarNotaAoParticipante(email, nota) {
-        var item = obterParticipante(email);
-        alterarNota(item, nota);
-        armazenamento.putHTTP("email", item);
+    function obterParticipante(id) {
+        return armazenamento.obterItem(id);
     }
 
     function obterMediaDasNotasDosParticipantes() {
@@ -86,11 +77,11 @@ function SistemaCadastro() {
     }
 
     function obterTotalDeParticipantes() {
-        return armazenamento.getHTTP().length;
+        return armazenamento.deserializar().length;
     }
 
-    function verificarSeParticipanteEstaAprovado(email) {
-        return obterParticipante(email).aprovado;
+    function verificarSeParticipanteEstaAprovado(id) {
+        return obterParticipante(id).aprovado;
     }
 
     function obterQuantidadeDeParticipantesPorSexo(sexo) {
@@ -106,7 +97,6 @@ function SistemaCadastro() {
         buscarParticipantesAprovados,
         buscarParticipantesReprovados,
         obterParticipante,
-        adicionarNotaAoParticipante,
         obterMediaDasNotasDosParticipantes,
         obterTotalDeParticipantes,
         verificarSeParticipanteEstaAprovado,
